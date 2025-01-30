@@ -1,0 +1,72 @@
+Instructions for the queue project
+==================================
+
+The intention of this project is to teach you some basic C that you
+will need to complete the real OS project. You are to implement a
+queue as a simple, singly linked list, as well as a test program.
+The API is specified in queue.h and hopefully self-explanatory.
+Do not modify queue.h: you are only supposed to turn in queue.c
+and test_queue.c.  This project will be autograded.
+
+To compile, run (from the shell):
+
+	make
+	# or 'make test_queue'
+
+When the code is completed, this should create a program called 'test_queue'.
+You can run this program from the shell as follows:
+
+	./test_queue
+
+To clean up, run
+
+	make clean
+
+Try doing this last thing if you have any 'strange' issues with building.
+Sometimes it helps to build things from scratch.
+
+If you have build/compiling issues, please investigate them yourself
+before asking on Ed Discussion or coming to office hours. Google is your
+friend!
+
+Put your tests in the test_queue.c file. It is compiled automatically
+when you run make and includes a single basic test and framework.
+Testing is important.  Your tests should be thorough and organized
+so that someone who hasn't seen your interface can figure out what's
+going on.
+
+test_queue should not output anything (!) and exit with status 0 if no
+bugs are found.  test_queue should output a brief, self-explanatory
+error report and exit with a non-zero status if a bug was found.
+At most one bug should be reported.
+
+Note that test_queue is a black box test program: it does not know
+about the implementation (internal structure) of the queue.  Nonetheless,
+it's good to think about corner cases to test.
+
+Make sure all your code is well-commented.  Anybody should be able
+to look at your code and quickly understand what's going on even without
+looking at the C code.
+
+You are to work by yourself for this project.
+
+Common misunderstandings and mistakes:
+
+- Your queue code does not have to check for invalid arguments.  So if
+  somebody calls dequeue on a NULL pointer, that is allowed to crash.
+  If your code is called with bad arguments, then its behavior is
+  undefined.
+- The user is allowed to enqueue and dequeue NULL items.
+- assert() is to check invariants and can be used within queue.c
+  to check the integrity of the queue.  Do not use it as a shortcut
+  to report failures in test_queue.c.  In particular, do not call
+  assert(expr) where expr has a side-effect.  A common mistake is to
+  write "assert(dequeue() != NULL)".
+
+Resources:
+
+C programming tutorial: http://www.lysator.liu.se/c/bwk-tutor.html
+Basic C Reference: https://www.geeksforgeeks.org/c-language-set-1-introduction/
+C debugger, GDB: https://www.gnu.org/software/gdb/
+
+Have fun!
