@@ -37,7 +37,7 @@ int queue_enqueue(queue_t queue, void* item) {
     new_node->data = item;
     new_node->next= NULL;
 
-    if (queue->head==NULL){
+    if (queue->size==0){
         queue->head = new_node;
     } else {
         queue->tail->next = new_node;
@@ -58,7 +58,7 @@ int queue_insert(queue_t queue, void* item) {
     new_node->data = item;
     new_node->next= NULL;
 
-    if (queue->head==NULL){
+    if (queue->size==0){
         queue->tail = new_node;
     } else {
         new_node->next = queue->head;
@@ -69,16 +69,39 @@ int queue_insert(queue_t queue, void* item) {
 }
 
 int queue_dequeue(queue_t queue, void** pitem) {
-    
+    if (!queue || queue->size==0){
+        return -1;
+    }
+    node_t* node = queue->head;
+    queue->head = node->next;
+    if (!queue->head){
+        queue->tail=NULL;
+    }
+    queue->size--;
+    if (pitem){
+        *pitem = node->data;
+    }
+    free(node);
+    return 0;
 }
 
 void queue_iterate(const queue_t queue, queue_func_t f, void* context) {
-    // your code here
+    if (!queue){
+        return; //no -1 since return type is void
+    }
+    node_t* cur = queue->head;
+    while (cur){
+        f(cur->data,context);
+        cur = cur->next;
+    }
 }
 
 int queue_free(queue_t queue) {
-    // your code here
-    // Must be O(1) (performance does not depend on length of queue)
+    if (!queue || queue->size!=0){
+        return -1;
+    }
+    free(queue);
+    return 0;
 }
 
 int queue_length(const queue_t queue) {
