@@ -86,7 +86,7 @@ int queue_dequeue(queue_t queue, void** pitem) {
 }
 
 void queue_iterate(const queue_t queue, queue_func_t f, void* context) {
-    if (!queue){
+    if (!queue || !f){
         return; //no -1 since return type is void
     }
     node_t* cur = queue->head;
@@ -105,10 +105,35 @@ int queue_free(queue_t queue) {
 }
 
 int queue_length(const queue_t queue) {
-    // your code here
-    // Must be O(1) (performance does not depend on length of queue)
+    if (!queue){
+        return -1;
+    }
+    return queue->size;
 }
 
 int queue_delete(queue_t queue, void* item) {
-    // your code here
+    if (!queue || !item || queue->size==0){
+        return -1;
+    }
+    node_t* cur = queue->head;
+    if (cur->data==item){
+        queue->head = cur->next;
+        free(cur);
+        queue->size--;
+        return 0;
+    }
+    while (cur->next){
+        if (cur->next->data==item){
+            node_t* temp = cur->next;
+            cur->next = temp->next;
+            if (temp==queue->tail){
+                queue->tail=cur;
+            }
+            free(temp);
+            queue->size--;
+            return 0;
+        }
+        cur = cur->next;
+    }
+    return -1;
 }
