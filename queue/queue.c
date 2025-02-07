@@ -3,18 +3,18 @@
 #include <stdio.h>
 
 typedef struct node {
-    void* data;
-    struct node* next;
+    void *data;
+    struct node *next;
 } node_t;
 
 typedef struct queue {
-	node_t* head;
-    node_t* tail;
+	node_t *head;
+    node_t *tail;
     int size;
 } *queue_t;
 
 queue_t queue_new() {
-    queue_t queue = (queue_t)malloc(sizeof(struct queue));
+    queue_t queue = malloc(sizeof(*queue));
 
     if (!queue){
         return NULL;
@@ -30,7 +30,7 @@ int queue_enqueue(queue_t queue, void* item) {
     if (!queue){
         return -1;
     }
-    node_t* new_node = (node_t*)malloc(sizeof(node_t));
+    node_t *new_node = malloc(sizeof(*new_node));
     if (!new_node){
         return -1;
     }
@@ -51,7 +51,7 @@ int queue_insert(queue_t queue, void* item) {
     if (!queue){
         return -1;
     }
-    node_t* new_node = (node_t*)malloc(sizeof(node_t));
+    node_t *new_node = malloc(sizeof(*new_node));
     if (!new_node){
         return -1;
     }
@@ -72,7 +72,7 @@ int queue_dequeue(queue_t queue, void** pitem) {
     if (!queue || queue->size==0){
         return -1;
     }
-    node_t* node = queue->head;
+    node_t *node = queue->head;
     queue->head = node->next;
     if (!queue->head){
         queue->tail=NULL;
@@ -89,7 +89,7 @@ void queue_iterate(const queue_t queue, queue_func_t f, void* context) {
     if (!queue || !f){
         return; //no -1 since return type is void
     }
-    node_t* cur = queue->head;
+    node_t *cur = queue->head;
     while (cur){
         f(cur->data,context);
         cur = cur->next;
@@ -115,7 +115,7 @@ int queue_delete(queue_t queue, void* item) {
     if (!queue || !item || queue->size==0){
         return -1;
     }
-    node_t* cur = queue->head;
+    node_t *cur = queue->head;
     if (cur->data==item){
         queue->head = cur->next;
         free(cur);
@@ -124,7 +124,7 @@ int queue_delete(queue_t queue, void* item) {
     }
     while (cur->next){
         if (cur->next->data==item){
-            node_t* temp = cur->next;
+            node_t *temp = cur->next;
             cur->next = temp->next;
             if (temp==queue->tail){
                 queue->tail=cur;
