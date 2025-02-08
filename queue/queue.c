@@ -1,6 +1,7 @@
 #include "queue.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 
 typedef struct node {
     void *data;
@@ -27,9 +28,7 @@ queue_t queue_new() {
 }
 
 int queue_enqueue(queue_t queue, void* item) {
-    if (!queue){
-        return -1;
-    }
+    assert(queue);
     node_t *new_node = malloc(sizeof(*new_node));
     if (!new_node){
         return -1;
@@ -48,9 +47,7 @@ int queue_enqueue(queue_t queue, void* item) {
 }
 
 int queue_insert(queue_t queue, void* item) {
-    if (!queue){
-        return -1;
-    }
+    assert(queue);
     node_t *new_node = malloc(sizeof(*new_node));
     if (!new_node){
         return -1;
@@ -69,7 +66,8 @@ int queue_insert(queue_t queue, void* item) {
 }
 
 int queue_dequeue(queue_t queue, void** pitem) {
-    if (!queue || queue->size==0){
+    assert(queue);
+    if (queue->size==0){
         return -1;
     }
     node_t *node = queue->head;
@@ -86,9 +84,7 @@ int queue_dequeue(queue_t queue, void** pitem) {
 }
 
 void queue_iterate(const queue_t queue, queue_func_t f, void* context) {
-    if (!queue || !f){
-        return; //no -1 since return type is void
-    }
+    assert(queue && f);
     node_t *cur = queue->head;
     while (cur){
         f(cur->data,context);
@@ -97,7 +93,8 @@ void queue_iterate(const queue_t queue, queue_func_t f, void* context) {
 }
 
 int queue_free(queue_t queue) {
-    if (!queue || queue->size!=0){
+    assert(queue);
+    if (queue->size!=0){
         return -1;
     }
     free(queue);
@@ -105,14 +102,13 @@ int queue_free(queue_t queue) {
 }
 
 int queue_length(const queue_t queue) {
-    if (!queue){
-        return -1;
-    }
+    assert(queue);
     return queue->size;
 }
 
 int queue_delete(queue_t queue, void* item) {
-    if (!queue || !item || queue->size==0){
+    assert(queue);
+    if (queue->size==0){
         return -1;
     }
     node_t *cur = queue->head;
